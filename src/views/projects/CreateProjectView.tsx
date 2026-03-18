@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import ProjectForm from "@/components/projects/ProjectForm"
+import type { ProjectFormData } from "types"
 
 export default function CreateProjectView() {
-  const initialValues = {
+  const initialValues : ProjectFormData = {
     projectName: "",
     clientName: "",
     description: "",
   }
 
-  const { register, handleSubmit, formState: { errors }} = useForm({ defaultValues: { initialValues } })
+  const { register, handleSubmit, formState: { errors } } = useForm<ProjectFormData>({ defaultValues: initialValues })
 
-  const hnadleForm = (data: any) => {
+  const handleForm = (data: ProjectFormData) => {
     console.log("Formulario enviado", data)
   }
 
@@ -34,7 +35,7 @@ export default function CreateProjectView() {
 
         <form
           className="mt-10 rounded-lg bg-white p-10 shadow-lg"
-          onSubmit={handleSubmit(hnadleForm)}
+          onSubmit={handleSubmit(handleForm)}
           noValidate
         >
           <ProjectForm 
