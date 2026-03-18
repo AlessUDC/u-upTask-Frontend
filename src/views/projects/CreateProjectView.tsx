@@ -3,8 +3,11 @@ import { useForm } from "react-hook-form"
 import ProjectForm from "@/components/projects/ProjectForm"
 import type { ProjectFormData } from "@/types/index"
 import { createProject } from "@/api/ProjectAPI"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 export default function CreateProjectView() {
+  const navigate = useNavigate()
   const initialValues : ProjectFormData = {
     projectName: "",
     clientName: "",
@@ -13,8 +16,10 @@ export default function CreateProjectView() {
 
   const { register, handleSubmit, formState: { errors } } = useForm<ProjectFormData>({ defaultValues: initialValues })
 
-  const handleForm = (data: ProjectFormData) => {
-    createProject(data)
+  const handleForm = async (formData: ProjectFormData) => {
+    const data = await createProject(formData)
+    toast.success(data)
+    navigate("/")
   }
 
   return (
@@ -27,7 +32,10 @@ export default function CreateProjectView() {
 
         <nav className="my-5">
           <Link
-            className="cursor-pointer rounded-lg bg-purple-400 px-10 py-3 text-xl font-bold text-white transition-colors hover:bg-purple-500"
+            className="
+              cursor-pointer rounded-lg bg-purple-400 px-10 py-3 text-xl font-bold 
+              text-white transition-colors hover:bg-purple-500
+            "
             to="/"
           >
             Volver a Proyectos
@@ -46,7 +54,10 @@ export default function CreateProjectView() {
           <input
             type="submit"
             value="Crear Proyecto"
-            className="w-full cursor-pointer bg-fuchsia-600 p-3 font-bold uppercase text-white transition-colors hover:bg-fuchsia-700"
+            className="
+              w-full cursor-pointer bg-fuchsia-600 p-3 font-bold uppercase 
+              text-white transition-colors hover:bg-fuchsia-700
+            "
           />
         </form>
       </div>
