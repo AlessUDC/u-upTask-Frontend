@@ -44,7 +44,7 @@ export default function DashboardView() {
                         </p>
                         <p className="text-sm text-gray-400">
                             {project.description}
-                        </p>
+                        </p> 
                     </div>
                 </div>
                 <div className="flex shrink-0 items-center gap-x-6">
@@ -67,7 +67,7 @@ export default function DashboardView() {
                                         </Link>
                                     </Menu.Item>
                                     <Menu.Item>
-                                        <Link to={``}
+                                        <Link to={`/projects/${project._id}/edit`}
                                             className='block px-3 py-1 text-sm leading-6 text-gray-900'>
                                         Editar Proyecto
                                         </Link>
