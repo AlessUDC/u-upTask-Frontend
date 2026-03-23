@@ -1,9 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AppLayout from "./layouts/AppLayout";
-import DashboardView from "./views/DashboardView";
-import CreateProjectView from "./views/projects/CreateProjectView";
-import EditProjectView from "./views/projects/EditProjectView";
-import ProjectDetailView from "./views/projects/ProjectDetailsView";
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import AppLayout from "./layouts/AppLayout"
+import DashboardView from "./views/DashboardView"
+import CreateProjectView from "./views/projects/CreateProjectView"
+import EditProjectView from "./views/projects/EditProjectView"
+import ProjectDetailView from "./views/projects/ProjectDetailsView"
 
 export function Router() {
   return (
@@ -17,5 +17,5 @@ export function Router() {
         </Route>
       </Routes>
     </BrowserRouter>
-  );
+  )
 }
