@@ -1,6 +1,6 @@
 import axios from "axios"
 import { isAxiosError } from "axios"
-import type { ConfirmToken, RequestConfirmationCodeForm, UserLoginForm, UserRegistrationForm } from "@/types/index"
+import type { ConfirmToken, ForgotPasswordForm, NewPasswordForm, RequestConfirmationCodeForm, UserLoginForm, UserRegistrationForm } from "@/types/index"
 
 export async function createAccount(formData: UserRegistrationForm) {
     try {
@@ -37,9 +37,46 @@ export async function requestConfirmationCode(formData: RequestConfirmationCodeF
         }
     }
 }
+
 export async function login(formData: UserLoginForm) {
     try {
         const url = `${import.meta.env.VITE_API_URL}/auth/login`
+        const { data } = await axios.post<string>(url, formData)
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function forgotPassword(formData: ForgotPasswordForm) {
+    try {
+        const url = `${import.meta.env.VITE_API_URL}/auth/forgot-password`
+        const { data } = await axios.post<string>(url, formData)
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function validateToken(formData: ConfirmToken) {
+    try {
+        const url = `${import.meta.env.VITE_API_URL}/auth/validate-token`
+        const { data } = await axios.post<string>(url, formData)
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function updatePasswordWithToken({formData, token}: {formData: NewPasswordForm, token: ConfirmToken['token']}) {
+    try {
+        const url = `${import.meta.env.VITE_API_URL}/auth/update-password/${token}`
         const { data } = await axios.post<string>(url, formData)
         return data
     } catch (error) {
