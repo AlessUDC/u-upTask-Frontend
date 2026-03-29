@@ -1,6 +1,15 @@
 import axios from "axios"
 import { isAxiosError } from "axios"
-import type { ConfirmToken, ForgotPasswordForm, NewPasswordForm, RequestConfirmationCodeForm, UserLoginForm, UserRegistrationForm } from "@/types/index"
+import {
+    userSchema,
+    type ConfirmToken,
+    type ForgotPasswordForm,
+    type NewPasswordForm,
+    type RequestConfirmationCodeForm,
+    type UserLoginForm,
+    type UserRegistrationForm
+} from "@/types/index"
+import api from "@/lib/axios"
 
 export async function createAccount(formData: UserRegistrationForm) {
     try {
@@ -42,6 +51,7 @@ export async function login(formData: UserLoginForm) {
     try {
         const url = `${import.meta.env.VITE_API_URL}/auth/login`
         const { data } = await axios.post<string>(url, formData)
+        localStorage.setItem('AUTH_TOKEN', data)
         return data
     } catch (error) {
         if (isAxiosError(error) && error.response) {
@@ -79,6 +89,20 @@ export async function updatePasswordWithToken({formData, token}: {formData: NewP
         const url = `${import.meta.env.VITE_API_URL}/auth/update-password/${token}`
         const { data } = await axios.post<string>(url, formData)
         return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function getUser() {
+    try {
+        const { data } = await api.get('/auth/user')
+        const response = userSchema.safeParse(data)
+        if(response.success) {
+            return response.data
+        }
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)
