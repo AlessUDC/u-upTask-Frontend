@@ -37,6 +37,11 @@ export const TaskSchema = z.object({
     description: z.string(),
     project: z.string(),
     status: taskStatusSchema,
+    completedBy: z.array(z.object({
+        _id: z.string(),
+        user: userSchema,
+        status: taskStatusSchema
+    })),
     createdAt: z.string(),
     updatedAt: z.string(),
 })
@@ -47,9 +52,10 @@ export type TaskFormData = Pick<Task, "name" | "description">
 // ---- Projects ----
 export const ProjectSchema = z.object({
     _id: z.string(),
-    projectName: z.string().min(1, "El Titulo del Proyecto es obligatorio"),
-    clientName: z.string().min(1, "El Nombre del Cliente es obligatorio"),
-    description: z.string().min(1, "Una descripción del proyecto es obligatoria"),
+    projectName: z.string(),
+    clientName: z.string(),
+    description: z.string(),
+    manager: z.string()
 })
 
 export const dashboardProjectSchema = z.array(
@@ -58,6 +64,7 @@ export const dashboardProjectSchema = z.array(
         projectName: true,
         clientName: true,
         description: true,
+        manager: true
     })
 )
 
