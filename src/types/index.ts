@@ -18,6 +18,7 @@ export type RequestConfirmationCodeForm = Pick<Auth, 'email'>
 export type ForgotPasswordForm = Pick<Auth, 'email'>
 export type NewPasswordForm = Pick<Auth, 'password' | 'password_confirmation'>
 export type UpdateCurrentUserPasswordForm = Pick<Auth, 'current_password' | 'password' | 'password_confirmation'>
+export type CheckPasswordForm = Pick<Auth, 'password'>
 
 // ---- Users ----
 export const userSchema = AuthSchema.pick({
@@ -46,7 +47,7 @@ export type NoteFormData = Pick<Note, "content">
 export const taskStatusSchema = z.enum(['pending', 'onHold', 'inProgress', 'underReview', 'completed'])
 export type TaskStatus = z.infer<typeof taskStatusSchema>
 
-export const TaskSchema = z.object({
+export const taskSchema = z.object({
     _id: z.string(),
     name: z.string(),
     description: z.string(),
@@ -62,20 +63,30 @@ export const TaskSchema = z.object({
     updatedAt: z.string(),
 })
 
-export type Task = z.infer<typeof TaskSchema>
+export const taskProjectSchema = taskSchema.pick({
+    _id: true,
+    name: true,
+    description: true,
+    status: true
+})
+
+export type Task = z.infer<typeof taskSchema>
 export type TaskFormData = Pick<Task, "name" | "description">
+export type TaskProject = z.infer<typeof taskProjectSchema>
 
 // ---- Projects ----
-export const ProjectSchema = z.object({
+export const projectSchema = z.object({
     _id: z.string(),
     projectName: z.string(),
     clientName: z.string(),
     description: z.string(),
-    manager: z.string()
+    manager: userSchema.shape._id,
+    tasks: z.array(taskProjectSchema),
+    team: z.array(userSchema.shape._id)
 })
 
 export const dashboardProjectSchema = z.array(
-    ProjectSchema.pick({
+    projectSchema.pick({
         _id: true,
         projectName: true,
         clientName: true,
@@ -84,7 +95,12 @@ export const dashboardProjectSchema = z.array(
     })
 )
 
-export type Project = z.infer<typeof ProjectSchema>
+export const editProjectSchema = projectSchema.pick({
+    projectName: true,
+    clientName: true,
+    description: true
+})
+export type Project = z.infer<typeof projectSchema>
 export type ProjectFormData = Pick<Project, "projectName" | "clientName" | "description">
 
 // ---- Team ----

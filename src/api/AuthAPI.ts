@@ -2,6 +2,7 @@ import axios from "axios"
 import { isAxiosError } from "axios"
 import {
     userSchema,
+    type CheckPasswordForm,
     type ConfirmToken,
     type ForgotPasswordForm,
     type NewPasswordForm,
@@ -103,6 +104,18 @@ export async function getUser() {
         if(response.success) {
             return response.data
         }
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function checkPassword(formData: CheckPasswordForm) {
+    try {
+        const url = `${import.meta.env.VITE_API_URL}/auth/check-password`
+        const { data } = await api.post<string>(url, formData)
+        return data
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)

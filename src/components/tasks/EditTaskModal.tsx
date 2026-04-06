@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useNavigate, useParams } from 'react-router-dom'
-import type { Task, TaskFormData } from '@/types/index'
+import type { TaskProject, TaskFormData } from '@/types/index'
 import { useForm } from 'react-hook-form'
 import TaskForm from './TaskForm'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -9,8 +9,8 @@ import { updateTask } from '@/api/TaskAPI'
 import { toast } from 'react-toastify'
 
 type EditTaskModalProps = {
-    data: Task
-    taskId: Task['_id']
+    data: TaskProject
+    taskId: TaskProject['_id']
 }
 
 export default function EditTaskModal({ data, taskId }: EditTaskModalProps) {

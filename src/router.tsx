@@ -15,6 +15,7 @@ import ProjectTeamView from "./views/projects/ProjectTeamView"
 import ProfileView from "./views/profile/ProfileView"
 import ChangePassword from "./views/profile/ChangePassword"
 import ProfileLayout from "./layouts/ProfileLayout"
+import NotFound from "./views/404/NotFound"
 
 export function Router() {
   return (
@@ -39,6 +40,10 @@ export function Router() {
           <Route path="/auth/request-code" element={<RequestCodeView />} />
           <Route path="/auth/forgot-password" element={<ForgotPasswordView />} />
           <Route path="/auth/new-password" element={<NewPasswordView />} />
+        </Route>
+
+        <Route element={<AuthLayout/>}>
+          <Route path='*' element={<NotFound/>} />
         </Route>
       </Routes>
     </BrowserRouter>
